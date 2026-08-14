@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "slug": "wow-335a",
+  "name": "World of Warcraft 3.3.5a",
+  "version": 1,
+  "detection": {
+    "requiredFiles": ["Wow.exe", "Data"],
+    "exeName": "Wow.exe"
+  },
+  "container": {
+    "screenSize": "960x432",
+    "graphicsDriver": "auto",
+    "dxwrapper": "dxvk",
+    "dxwrapperConfig": "",
+    "startupSelection": 2,
+    "box64Preset": "INTERMEDIATE",
+    "envVars": ""
+  },
+  "controlsProfile": "controls.icp",
+  "assets": [
+    {
+      "id": "consoleportlk",
+      "url": "https://github.com/leoaviana/ConsolePortLK/releases/download/1.5.0-rc2/ConsolePortLK-1.5.0-rc2.zip",
+      "sha256": "9ee20bb1f3c5c5b8d45fcc5980a07bb90d49a707e120613453177c05fea6497f"
+    }
+  ],
+  "notes": [
+    "Log in once, log out — per-account calibration finishes automatically.",
+    "Tuned for a 960x432 container with DXVK; the touch layout drives ConsolePortLK."
+  ],
+  "userSteps": {
+    "waitForDir": "WTF/Account",
+    "message": "Almost done! Log in once, then log out and exit: your controls will be configured automatically."
+  }
+}
