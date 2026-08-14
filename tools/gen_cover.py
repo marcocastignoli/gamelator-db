@@ -2,9 +2,11 @@
 """Generates a stylized text cover (600x800 PNG) with zero dependencies —
 box art is a licensing minefield (PLAN.md §9), pixel type is not.
 
-Usage: gen_cover.py <slug> <line1> [line2]
-e.g.:  gen_cover.py wow-335a WOW 3.3.5A
+Usage: gen_cover.py <slug> <line1> [line2] [--bg RRGGBB] [--text RRGGBB]
+                    [--accent RRGGBB] [--snow]
+e.g.:  gen_cover.py wow-335a WOW 3.3.5A --bg 0d1c2e --accent 74c6e8 --snow
 """
+import random
 import struct
 import sys
 import zlib
@@ -61,8 +63,15 @@ ACCENT = (45, 212, 167)  # gamelator teal
 TEXT = (248, 240, 220)   # warm off-white
 
 
-def blank():
-    return [[BG] * W for _ in range(H)]
+def parse_hex(value, fallback):
+    try:
+        return tuple(int(value[i:i + 2], 16) for i in (0, 2, 4))
+    except (ValueError, TypeError):
+        return fallback
+
+
+def blank(bg):
+    return [[bg] * W for _ in range(H)]
 
 
 def rect(px, x0, y0, w, h, color):
@@ -97,22 +106,43 @@ def write_png(path, px):
                      + chunk(b"IEND", b""))
 
 
+def draw_snow(px, slug, color, dim_color):
+    """Deterministic pixel 'snowfall' (seeded by slug, so re-runs are stable)."""
+    rng = random.Random(slug)
+    for _ in range(90):
+        x, y = rng.randrange(W), rng.randrange(H)
+        size = rng.choice((2, 2, 3, 4))
+        rect(px, x, y, size, size, color if rng.random() < 0.4 else dim_color)
+
+
 def main():
-    if len(sys.argv) < 3:
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    flags = sys.argv[1:]
+    if len(args) < 2:
         print(__doc__, file=sys.stderr)
         sys.exit(2)
-    slug, line1 = sys.argv[1], sys.argv[2]
-    line2 = sys.argv[3] if len(sys.argv) > 3 else None
+    slug, line1 = args[0], args[1]
+    line2 = args[2] if len(args) > 2 else None
 
-    px = blank()
-    rect(px, 0, 0, W, 8, ACCENT)
-    rect(px, 0, H - 8, W, 8, ACCENT)
+    def flag_value(name, fallback):
+        return parse_hex(flags[flags.index(name) + 1], fallback) if name in flags else fallback
+
+    bg = flag_value("--bg", BG)
+    text = flag_value("--text", TEXT)
+    accent = flag_value("--accent", ACCENT)
+
+    px = blank(bg)
+    if "--snow" in flags:
+        dim = tuple((c + b) // 2 for c, b in zip(accent, bg))
+        draw_snow(px, slug, text, dim)
+    rect(px, 0, 0, W, 8, accent)
+    rect(px, 0, H - 8, W, 8, accent)
     scale1 = max(4, min(16, (W - 40) // (max(1, len(line1)) * 6)))
     draw_text(px, line1, H // 2 - (scale1 * 7) // (1 if line2 else 2) - (60 if line2 else 0),
-              scale1, TEXT)
+              scale1, text)
     if line2:
         scale2 = max(3, min(10, (W - 80) // (max(1, len(line2)) * 6)))
-        draw_text(px, line2, H // 2 + 40, scale2, ACCENT)
+        draw_text(px, line2, H // 2 + 40, scale2, accent)
 
     out = ROOT / "games" / slug / "cover.png"
     out.parent.mkdir(parents=True, exist_ok=True)
