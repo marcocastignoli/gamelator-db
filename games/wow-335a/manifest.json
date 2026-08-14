@@ -17,6 +17,8 @@
     "envVars": ""
   },
   "controlsProfile": "controls.icp",
+  "patchScript": "patch.js",
+  "accountsDir": "WTF/Account",
   "assets": [
     {
       "id": "consoleportlk",

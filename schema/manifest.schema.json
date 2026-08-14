@@ -78,6 +78,10 @@
       "type": "string",
       "description": "Sandboxed provisioning script (see the app's sandbox API); omit for pure-declarative games."
     },
+    "accountsDir": {
+      "type": "string",
+      "description": "Directory (relative to the game folder) whose subdirectories are per-user accounts; enables the script's accounts.forEach helper."
+    },
     "settings": {
       "type": "array",
       "items": {
