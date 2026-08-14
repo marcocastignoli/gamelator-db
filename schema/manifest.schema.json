@@ -4,7 +4,14 @@
   "title": "Gamelator game manifest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "slug", "name", "version", "detection", "container"],
+  "required": [
+    "schemaVersion",
+    "slug",
+    "name",
+    "version",
+    "detection",
+    "container"
+  ],
   "properties": {
     "schemaVersion": {
       "type": "integer",
@@ -16,7 +23,10 @@
       "pattern": "^[a-z0-9][a-z0-9-]*$",
       "description": "Stable id; must equal the directory name under games/."
     },
-    "name": { "type": "string", "minLength": 1 },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
     "version": {
       "type": "integer",
       "minimum": 1,
@@ -25,35 +35,62 @@
     "detection": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["requiredFiles", "exeName"],
+      "required": [
+        "requiredFiles",
+        "exeName"
+      ],
       "properties": {
         "requiredFiles": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "minItems": 1,
           "description": "Files/dirs (relative to the game folder) that must exist for the folder to validate."
         },
-        "exeName": { "type": "string" }
+        "exeName": {
+          "type": "string"
+        }
       }
     },
     "container": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["screenSize", "graphicsDriver", "dxwrapper", "startupSelection", "box64Preset"],
+      "required": [
+        "screenSize",
+        "graphicsDriver",
+        "dxwrapper",
+        "startupSelection",
+        "box64Preset"
+      ],
       "properties": {
-        "screenSize": { "type": "string", "pattern": "^[0-9]+x[0-9]+$" },
+        "screenSize": {
+          "type": "string",
+          "pattern": "^[0-9]+x[0-9]+$"
+        },
         "graphicsDriver": {
           "type": "string",
           "description": "\"auto\" picks Turnip on Adreno and Vortek elsewhere; or a concrete Winlator driver id."
         },
-        "dxwrapper": { "type": "string" },
+        "dxwrapper": {
+          "type": "string"
+        },
         "dxwrapperConfig": {
           "type": "string",
           "description": "e.g. \"version=1.10.3\" to pin DXVK for old d3d9 games instead of the per-launch probe."
         },
-        "startupSelection": { "type": "integer", "minimum": 0, "maximum": 2 },
-        "box64Preset": { "type": "string" },
-        "envVars": { "type": "string", "description": "Appended to the container defaults." }
+        "startupSelection": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "box64Preset": {
+          "type": "string"
+        },
+        "envVars": {
+          "type": "string",
+          "description": "Appended to the container defaults."
+        }
       }
     },
     "controlsProfile": {
@@ -65,11 +102,24 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "url", "sha256"],
+        "required": [
+          "id",
+          "url",
+          "sha256"
+        ],
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
-          "url": { "type": "string", "pattern": "^https://" },
-          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
         }
       },
       "description": "App-side downloads, verified against the pinned sha256 before any script can touch them."
@@ -77,6 +127,10 @@
     "patchScript": {
       "type": "string",
       "description": "Sandboxed provisioning script (see the app's sandbox API); omit for pure-declarative games."
+    },
+    "settingsScript": {
+      "type": "string",
+      "description": "Sandboxed script defining the settings functions referenced by settings[].source/apply; evaluating it must have no side effects."
     },
     "accountsDir": {
       "type": "string",
@@ -87,24 +141,60 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["key", "type", "label"],
+        "required": [
+          "key",
+          "type",
+          "label"
+        ],
         "properties": {
-          "key": { "type": "string" },
-          "type": { "type": "string", "enum": ["choice", "choice+custom", "text", "toggle"] },
-          "label": { "type": "string" },
-          "values": { "type": "array", "items": { "type": "string" } },
-          "source": { "type": "string", "description": "script:<fn> that supplies choices." },
-          "apply": { "type": "string", "description": "script:<fn> or config:<key> that applies the value." }
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "choice",
+              "choice+custom",
+              "text",
+              "toggle"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source": {
+            "type": "string",
+            "description": "script:<fn> from settingsScript returning {\"choices\":[...],\"current\":...}."
+          },
+          "apply": {
+            "type": "string",
+            "description": "script:<fn> (function from settingsScript) or wtf:<path>:<key> (SET key in a wtf file) that applies the value."
+          }
         }
       }
     },
-    "notes": { "type": "array", "items": { "type": "string" } },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "userSteps": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "waitForDir": { "type": "string" },
-        "message": { "type": "string" }
+        "waitForDir": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
       }
     }
   }
