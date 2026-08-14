@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "slug": "fallout3",
+  "name": "Fallout 3",
+  "version": 1,
+  "detection": {
+    "requiredFiles": ["Fallout3.exe", "Data/Fallout3.esm"],
+    "exeName": "Fallout3.exe"
+  },
+  "container": {
+    "screenSize": "960x432",
+    "graphicsDriver": "auto",
+    "dxwrapper": "dxvk",
+    "dxwrapperConfig": "",
+    "startupSelection": 2,
+    "box64Preset": "INTERMEDIATE",
+    "envVars": ""
+  },
+  "controlsProfile": "controls.icp",
+  "patchScript": "patch.js",
+  "settingsScript": "settings.js",
+  "settings": [
+    {
+      "key": "resolution",
+      "type": "choice",
+      "label": "Resolution",
+      "values": ["800x360", "960x432", "1280x576"],
+      "source": "script:getResolution",
+      "apply": "script:setResolution"
+    },
+    {
+      "key": "skipintro",
+      "type": "toggle",
+      "label": "Skip intro videos",
+      "source": "script:getSkipIntro",
+      "apply": "script:setSkipIntro"
+    }
+  ],
+  "notes": [
+    "Buy Fallout 3: Game of the Year Edition on GOG (DRM-free). Install it on any PC, then copy the whole game folder (the one containing Fallout3.exe and Data/) to this device and select it here.",
+    "The classic multi-core freeze fix and an in-folder save location are applied automatically before the first launch — no launcher, no manual ini editing.",
+    "In combat, the V button opens V.A.T.S. — the touch-friendly way to fight."
+  ]
+}

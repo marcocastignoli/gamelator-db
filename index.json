@@ -1,6 +1,13 @@
 {
   "games": [
     {
+      "slug": "fallout3",
+      "name": "Fallout 3",
+      "version": 1,
+      "minSchemaVersion": 1,
+      "cover": "cover.png"
+    },
+    {
       "slug": "wow-335a",
       "name": "World of Warcraft 3.3.5a",
       "version": 1,
