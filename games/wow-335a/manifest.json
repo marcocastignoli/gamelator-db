@@ -18,7 +18,31 @@
   },
   "controlsProfile": "controls.icp",
   "patchScript": "patch.js",
+  "settingsScript": "settings.js",
   "accountsDir": "WTF/Account",
+  "settings": [
+    {
+      "key": "realmlist",
+      "type": "choice+custom",
+      "label": "Realm server",
+      "source": "script:getRealmlists",
+      "apply": "script:setRealmlist"
+    },
+    {
+      "key": "resolution",
+      "type": "choice",
+      "label": "Resolution",
+      "values": ["800x360", "960x432", "1200x540", "1600x720"],
+      "apply": "wtf:WTF/Config.wtf:gxResolution"
+    },
+    {
+      "key": "farclip",
+      "type": "choice",
+      "label": "View distance",
+      "values": ["400", "727", "1000"],
+      "apply": "wtf:WTF/Config.wtf:farclip"
+    }
+  ],
   "assets": [
     {
       "id": "consoleportlk",
