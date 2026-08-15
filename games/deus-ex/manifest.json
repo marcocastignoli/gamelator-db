@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "slug": "deus-ex",
+  "name": "Deus Ex",
+  "version": 1,
+  "detection": {
+    "requiredFiles": ["System/DeusEx.exe", "Maps"],
+    "exeName": "System/DeusEx.exe"
+  },
+  "container": {
+    "screenSize": "960x432",
+    "graphicsDriver": "auto",
+    "dxwrapper": "dxvk",
+    "dxwrapperConfig": "",
+    "startupSelection": 2,
+    "box64Preset": "INTERMEDIATE",
+    "envVars": "DXVK_FRAME_RATE=60"
+  },
+  "controlsProfile": "controls.icp",
+  "patchScript": "patch.js",
+  "settingsScript": "settings.js",
+  "settings": [
+    {
+      "key": "resolution",
+      "type": "choice",
+      "label": "Resolution",
+      "values": ["800x360", "960x432", "1280x576"],
+      "source": "script:getResolution",
+      "apply": "script:setResolution"
+    },
+    {
+      "key": "renderer",
+      "type": "choice",
+      "label": "Renderer",
+      "source": "script:getRenderer",
+      "apply": "script:setRenderer"
+    }
+  ],
+  "assets": [
+    {
+      "id": "d3d9renderer",
+      "url": "https://www.cwdohnal.com/utglr/dxd3d9r13.zip",
+      "sha256": "9ad3dce9fa2c84c8321432958e349a93e563e7ef5a0c241a97c6b629a3f23a54"
+    }
+  ],
+  "notes": [
+    "Buy Deus Ex: Game of the Year Edition on GOG (DRM-free). Install it on any PC — or unpack the offline installer .exe with innoextract (Windows not required; the game needs no registry entries) — then copy the game folder (the one containing System/ and Maps/) to this device and select it here.",
+    "A modern Direct3D 9 renderer is downloaded (checksum-verified) and configured automatically, capped at 60 fps — Unreal Engine 1 literally speeds up the game above that.",
+    "Touch tips: the right stick aims, USE is the right mouse button — it picks up items and opens doors. CROUCH stays held until you tap it again."
+  ]
+}
