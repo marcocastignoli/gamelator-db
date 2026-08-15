@@ -1,6 +1,13 @@
 {
   "games": [
     {
+      "slug": "deus-ex",
+      "name": "Deus Ex",
+      "version": 1,
+      "minSchemaVersion": 1,
+      "cover": "cover.png"
+    },
+    {
       "slug": "fallout3",
       "name": "Fallout 3",
       "version": 1,
