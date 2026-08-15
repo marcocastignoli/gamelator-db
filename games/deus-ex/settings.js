@@ -24,10 +24,18 @@ function requireIni() {
     if (!game.exists(INI)) throw new Error(INI + " not found — is this the Deus Ex game folder?");
 }
 
+/* The engine keeps a separate size per display mode; both are written so a
+   resolution change survives switching between them. */
+function viewportPrefix() {
+    return String(config.iniGet(INI, "WinDrv.WindowsClient", "StartupFullscreen"))
+            .toLowerCase() === "true" ? "Fullscreen" : "Windowed";
+}
+
 function getResolution() {
     requireIni();
-    var w = config.iniGet(INI, "WinDrv.WindowsClient", "FullscreenViewportX");
-    var h = config.iniGet(INI, "WinDrv.WindowsClient", "FullscreenViewportY");
+    var prefix = viewportPrefix();
+    var w = config.iniGet(INI, "WinDrv.WindowsClient", prefix + "ViewportX");
+    var h = config.iniGet(INI, "WinDrv.WindowsClient", prefix + "ViewportY");
     return { choices: [], current: (w !== null && h !== null) ? (w + "x" + h) : null };
 }
 
@@ -37,7 +45,45 @@ function setResolution(value) {
     if (m === null) throw new Error("resolution must look like 960x432");
     config.iniSet(INI, "WinDrv.WindowsClient", "FullscreenViewportX", m[1]);
     config.iniSet(INI, "WinDrv.WindowsClient", "FullscreenViewportY", m[2]);
+    config.iniSet(INI, "WinDrv.WindowsClient", "WindowedViewportX", m[1]);
+    config.iniSet(INI, "WinDrv.WindowsClient", "WindowedViewportY", m[2]);
     state.set("resolution", m[1] + "x" + m[2]);
+}
+
+/* Windowed is the default: exclusive fullscreen fails its first Present on
+   this stack (see patch.js). Winlator's desktop is the container's screen
+   size, so windowed at that size fills the screen anyway. */
+var DISPLAY_MODES = [
+    ["Windowed (recommended)", "windowed"],
+    ["Fullscreen", "fullscreen"]
+];
+
+function getDisplayMode() {
+    requireIni();
+    var fullscreen = String(config.iniGet(INI, "WinDrv.WindowsClient", "StartupFullscreen"))
+            .toLowerCase() === "true";
+    var current = fullscreen ? "fullscreen" : "windowed";
+    var choices = [];
+    var label = null;
+    for (var i = 0; i < DISPLAY_MODES.length; i++) {
+        choices.push(DISPLAY_MODES[i][0]);
+        if (DISPLAY_MODES[i][1] === current) label = DISPLAY_MODES[i][0];
+    }
+    return { choices: choices, current: label };
+}
+
+function setDisplayMode(name) {
+    requireIni();
+    for (var i = 0; i < DISPLAY_MODES.length; i++) {
+        if (DISPLAY_MODES[i][0] === name) {
+            var fullscreen = DISPLAY_MODES[i][1] === "fullscreen";
+            config.iniSet(INI, "WinDrv.WindowsClient", "StartupFullscreen",
+                    fullscreen ? "True" : "False");
+            state.set("displayMode", DISPLAY_MODES[i][1]);
+            return;
+        }
+    }
+    throw new Error("unknown display mode: " + name);
 }
 
 function getRenderer() {

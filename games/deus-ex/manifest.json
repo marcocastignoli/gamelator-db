@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "slug": "deus-ex",
   "name": "Deus Ex",
-  "version": 2,
+  "version": 3,
   "detection": {
     "requiredFiles": ["System/DeusEx.exe", "Maps"],
     "exeName": "System/DeusEx.exe"
@@ -11,7 +11,7 @@
     "screenSize": "960x432",
     "graphicsDriver": "auto",
     "dxwrapper": "dxvk",
-    "dxwrapperConfig": "",
+    "dxwrapperConfig": "version=1.10.3",
     "startupSelection": 2,
     "box64Preset": "INTERMEDIATE",
     "envVars": "DXVK_FRAME_RATE=60"
@@ -27,6 +27,13 @@
       "values": ["800x360", "960x432", "1280x576"],
       "source": "script:getResolution",
       "apply": "script:setResolution"
+    },
+    {
+      "key": "displaymode",
+      "type": "choice",
+      "label": "Display mode",
+      "source": "script:getDisplayMode",
+      "apply": "script:setDisplayMode"
     },
     {
       "key": "renderer",
@@ -47,6 +54,8 @@
     "Buy Deus Ex: Game of the Year Edition on GOG (DRM-free). Install it on any PC — or unpack the offline installer .exe with innoextract (Windows not required; the game needs no registry entries) — then copy the game folder (the one containing System/ and Maps/) to this device and select it here.",
     "A modern Direct3D 9 renderer is downloaded (checksum-verified) and configured automatically, capped at 60 fps — Unreal Engine 1 literally speeds up the game above that.",
     "The game's own renderer-selection dialog is suppressed: picking anything there (Direct3D especially) replaces the working setup and crashes the game on startup. Use Game settings › Renderer instead.",
+    "It runs windowed on purpose — exclusive fullscreen crashes this engine on Android. The window fills the screen anyway. Fullscreen is in Game settings › Display mode if you want to try it.",
+    "If the game ever exits badly you will see its \"Recovery Mode\" screen on the next launch: just tap Run Deus Ex.",
     "Touch tips: the right stick aims, USE is the right mouse button — it picks up items and opens doors. CROUCH stays held until you tap it again."
   ]
 }
