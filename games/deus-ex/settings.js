@@ -4,6 +4,11 @@
  * Only defines functions — evaluating this file has no side effects.
  * Everything lives in System/DeusEx.ini (UE1 keeps config next to the exe,
  * inside the game folder), so changes stick at any point.
+ *
+ * Writers also record the choice in state, because the engine rewrites that
+ * ini behind our back (renderer dialog, in-game video menu); patch.js
+ * re-asserts the display block from state before every launch, so state is
+ * what actually survives. See the patch.js header.
  */
 
 var INI = "System/DeusEx.ini";
@@ -52,6 +57,7 @@ function setRenderer(name) {
     for (var i = 0; i < RENDERERS.length; i++) {
         if (RENDERERS[i][0] === name) {
             config.iniSet(INI, "Engine.Engine", "GameRenderDevice", RENDERERS[i][1]);
+            state.set("renderer", RENDERERS[i][1]);
             return;
         }
     }

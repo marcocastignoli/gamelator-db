@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "slug": "deus-ex",
   "name": "Deus Ex",
-  "version": 1,
+  "version": 2,
   "detection": {
     "requiredFiles": ["System/DeusEx.exe", "Maps"],
     "exeName": "System/DeusEx.exe"
@@ -46,6 +46,7 @@
   "notes": [
     "Buy Deus Ex: Game of the Year Edition on GOG (DRM-free). Install it on any PC — or unpack the offline installer .exe with innoextract (Windows not required; the game needs no registry entries) — then copy the game folder (the one containing System/ and Maps/) to this device and select it here.",
     "A modern Direct3D 9 renderer is downloaded (checksum-verified) and configured automatically, capped at 60 fps — Unreal Engine 1 literally speeds up the game above that.",
+    "The game's own renderer-selection dialog is suppressed: picking anything there (Direct3D especially) replaces the working setup and crashes the game on startup. Use Game settings › Renderer instead.",
     "Touch tips: the right stick aims, USE is the right mouse button — it picks up items and opens doors. CROUCH stays held until you tap it again."
   ]
 }
